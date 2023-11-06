@@ -1,0 +1,71 @@
+% Student exercise profile
+:- set_prolog_flag(occurs_check, error).        % disallow cyclic terms
+:- set_prolog_stack(global, limit(8 000 000)).  % limit term space (8Mb)
+:- set_prolog_stack(local,  limit(2 000 000)).  % limit environment space
+
+% Your program goes here
+
+
+/** <examples> Your example queries go here, e.g.
+?- member(X, [cat, mouse]).
+*/
+
+/*
+ * (2 pontos) Usando relações já existentes, crie regras para definir as relações filho, filha, tio, tia,
+primo, prima, avô e avó. Atenção: Todas representam predicados binários e devem ser definidas
+com base em outras relações existentes (são regras), isto é, apenas acrescentar fatos do tipo
+filho(eva, ana) na base não será aceito.
+*/
+
+gerou(X,Y) :- pai(X,Y); mãe(X,Y).
+filho(X,Y) :- homem(X), gerou(Y,X).
+filha(X,Y) :- mulher(X), gerou(Y,X).
+
+irmão(X,Y) :- gerou(Z,X), gerou(W,Y), Z = W, homem(X), X \= Y.
+irmã(X,Y) :- gerou(Z,X), gerou(W,Y), Z = W, mulher(X), X \= Y.
+
+/* X é tio de Y*/
+tio(X,Y) :- homem(X), gerou(W,Y), irmão(X,W), X \= Y.
+tia(X,Y) :- mulher(X), gerou(W,Y), irmã(X,W), X \= Y.
+
+/* X é primo de Y */
+primo(X,Y) :- homem(X), gerou(W,Y), gerou(Z,X), gerou(P,W), gerou(Q,Z), P = Q,  X \= Y.
+prima(X,Y) :- mulher(X), gerou(W,Y), gerou(Z,X), gerou(P,W), gerou(Q,Z), P = Q,  X \= Y.
+
+/* X é avô de Y */
+avô(X,Y) :- homem(X), gerou(W, Y), gerou(X,W), X \= Y.
+avó(X,Y) :- mulher(X), gerou(W, Y), gerou(X,W), X \= Y.
+
+casal(X,Y) :- gerou(X,W),homem(X), gerou(Y,Z), mulher(Y), W = Z; gerou(X,W),mulher(X), gerou(Y,Z), homem(Y), W = Z.
+pessoa(X) :- homem(X); mulher(X).
+
+feliz(X) :- 
+               
+
+
+mãe(ana, eva).
+mãe(eva, noé).
+mãe(bia, raí).
+mãe(bia, clô).
+mãe(bia, ary).
+mãe(lia, gal).
+
+pai(ary, gal).
+pai(gil, raí).
+pai(gil, clô).
+pai(gil, ary).
+pai(raí, noé).
+pai(ivo, eva).
+
+mulher(ana).
+mulher(eva).
+mulher(bia).
+mulher(clô).
+mulher(gal).
+mulher(lia).
+
+homem(ivo).
+homem(raí).
+homem(noé).
+homem(gil).
+homem(ary).
