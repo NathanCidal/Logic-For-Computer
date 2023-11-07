@@ -4,19 +4,6 @@
 :- set_prolog_stack(local,  limit(2 000 000)).  % limit environment space
 
 % Your program goes here
-
-
-/** <examples> Your example queries go here, e.g.
-?- member(X, [cat, mouse]).
-*/
-
-/*
- * (2 pontos) Usando relações já existentes, crie regras para definir as relações filho, filha, tio, tia,
-primo, prima, avô e avó. Atenção: Todas representam predicados binários e devem ser definidas
-com base em outras relações existentes (são regras), isto é, apenas acrescentar fatos do tipo
-filho(eva, ana) na base não será aceito.
-*/
-
 gerou(X,Y) :- pai(X,Y); mãe(X,Y).
 filho(X,Y) :- homem(X), gerou(Y,X).
 filha(X,Y) :- mulher(X), gerou(Y,X).
@@ -39,10 +26,8 @@ avó(X,Y) :- mulher(X), gerou(W, Y), gerou(X,W), X \= Y.
 casal(X,Y) :- gerou(X,W),homem(X), gerou(Y,Z), mulher(Y), W = Z; gerou(X,W),mulher(X), gerou(Y,Z), homem(Y), W = Z.
 pessoa(X) :- homem(X); mulher(X).
 
-feliz(X) :- 
+feliz(X) :- gerou(X, _Y).
                
-
-
 mãe(ana, eva).
 mãe(eva, noé).
 mãe(bia, raí).
